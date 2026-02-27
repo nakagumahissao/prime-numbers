@@ -1,3 +1,5 @@
+use std::io::{self, Write};
+
 fn is_prime(x : u32) -> bool {
     if x < 2 {
         return false
@@ -29,14 +31,36 @@ fn get_number_ones(x : u32) -> u32 {
 }
 
 fn main() {
-    for i in 2..100 {
-        let qty:u32 =  get_number_ones(i);
-        let s = format!("{:b}", i);
+    let mut qty:u32 = 1;
+
+    while qty > 0 {
+        let mut input = String::new();
+
+        print!("Enter a number: ");
+        io::stdout().flush().unwrap(); // make sure prompt shows up
+
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read input");
+
+        let x: u32 = input
+            .trim()
+            .parse()
+            .expect("Please enter a valid number");
+
+        qty =  get_number_ones(x);
+
+        if qty < 2 {
+            continue;
+        }
+        
+        let s = format!("{:b}", x);
 
         if is_prime(qty) {
-            println!("{} = {}: is prime", i, s);
+            println!("{} = {}: is prime", x, s);
         } else {
-            println!("{} = {}: NOT is prime", i, s);
+            println!("{} = {}: NOT is prime", x, s);
         }
     }
+
 }
